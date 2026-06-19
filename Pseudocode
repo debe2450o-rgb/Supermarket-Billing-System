@@ -1,0 +1,58 @@
+START
+    WHILE true DO
+        INITIALIZE product_names AS List
+        INITIALIZE quantities AS List
+        INITIALIZE unit_prices AS List
+        INITIALIZE total_prices AS List
+        INITIALIZE overall_total = 0
+        
+        PRINT "--- New Customer Session ---"
+        
+        WHILE true DO
+            INPUT product_name
+            INPUT quantity
+            INPUT unit_price
+            
+            COMPUTE item_total = quantity * unit_price
+            
+            APPEND product_name TO product_names
+            APPEND quantity TO quantities
+            APPEND unit_price TO unit_prices
+            APPEND item_total TO total_prices
+            
+            COMPUTE overall_total = overall_total + item_total
+            
+            INPUT add_more_items ("Do you want to add another item? y/n: ")
+            IF add_more_items == 'n' OR add_more_items == 'N' THEN
+                BREAK inner loop
+            ENDIF
+        ENDWHILE
+        
+        IF overall_total > 500 THEN
+            COMPUTE discount = overall_total * 0.10
+        ELSE
+            COMPUTE discount = 0
+        ENDIF
+        
+        COMPUTE final_total = overall_total - discount
+        
+        PRINT "========== SMARTBUY SUPERMARKET =========="
+        PRINT "Item Name\tQty\tUnit Price\tTotal"
+        
+        FOR i FROM 0 TO length(product_names) - 1 DO
+            PRINT product_names[i] + "\t" + quantities[i] + "\t" + unit_prices[i] + "\t" + total_prices[i]
+        ENDFOR
+        
+        PRINT "------------------------------------------"
+        PRINT "Subtotal: Le " + overall_total
+        PRINT "Discount Applied: Le " + discount
+        PRINT "Final Total: Le " + final_total
+        PRINT "=========================================="
+        
+        INPUT next_customer ("Process another customer? y/n: ")
+        IF next_customer == 'n' OR next_customer == 'N' THEN
+            BREAK outer loop
+        ENDIF
+    ENDWHILE
+    PRINT "System Closed. Thank you!"
+END
